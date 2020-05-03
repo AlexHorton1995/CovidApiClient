@@ -64,7 +64,7 @@ namespace Covid19Client
                         sr.WriteLine(string.Format(@"{0},{1},{2},{3},{4},{5},{6},{7},{8},{9}",
                         RemoveSpecials(cLine.Country),
                         cLine.CountryCode,
-                        cLine.Slug,
+                        RemoveSpecials(cLine.Slug),
                         cLine.NewConfirmed,
                         cLine.TotalConfirmed,
                         cLine.NewDeaths,
@@ -87,15 +87,20 @@ namespace Covid19Client
 
         static string RemoveSpecials(string data)
         {
-
-
-            if (!data.Contains("`") && !data.Contains(","))
-                return data;
-
             string retString = string.Empty;
+            int charToE = 101;
+            int charToO = 111;
+            int charToSpace = 32;
+
             foreach(var c in data)
             {
-                if (!c.Equals('`') && !c.Equals(','))
+                if (c == 233)
+                    retString += (char)charToE;
+                else if (c == 244)
+                    retString += (char)charToO;
+                else if (c == 44)
+                    retString += (char)charToSpace;
+                else
                     retString += c;
             }
 
